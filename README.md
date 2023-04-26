@@ -1,41 +1,38 @@
-## Web Service Framework
+# Web Service Framework
 
 Based on the purpose of our projects, most of the time we provide API endpoints to other services or applications. Some popular Python Web frameworks are `Django, Flask, FastAPI`. For providing API endpoints only, I choose [`FastAPI`](https://fastapi.tiangolo.com/).
 
-### Project Structure
+## Project Structure
 
 The web structure is motivated and inherited by `Vue.js` structure
 
 ```bash
 .
-|-- app.py
-|-- config
-|   |-- ai_modules.yaml
-|   `-- api_config.yaml
-|-- config.py
-|-- .docker
-|   |-- Dockerfile
-|   `-- startup.sh
-|-- docker-compose.yaml
-|-- .dockerignore
-|-- .env
-|-- requirements.txt
-|-- src
-|   |-- components
-|   |   |-- ai_modules
-|   |   |   `-- some_ai_module.py
-|   |   `-- middlewares
-|	|   |       `-- authorization.py
-|	|	|		`-- cors.py
-|   |-- interface
-|   `-- routers
-|       `-- content_filtering.py
-|-- storage
-|   |-- externals
-|   `-- weights
-|-- test.ipynb
-|-- tests
-`-- utils
+├── components
+│   ├── ai_modules
+│   │   └── recommend.py
+│   ├── logger
+│   │   ├── handlers.py
+│   │   └── logger.py
+│   └── middlewares
+│       ├── depends.py
+│       └── validation.py
+├── config
+│   ├── README.md
+│   └── config.yaml
+├── interfaces
+│   ├── item.py
+│   └── responses.py
+├── routers
+│   └── item.py
+├── storage
+│   └── logs
+└── tests
+│   └── tests_versions.py
+├── config.py
+├── app.py
+├── requirements.txt
+├── docker-compose.yml
 ```
 
 The structure contains several main components:
@@ -46,7 +43,7 @@ The structure contains several main components:
 4. Tests
 5. Containerization
 
-#### Configuration
+### Configuration
 
 We use [`dynaconf`](https://www.dynaconf.com/) to parse and load configuration files. `Dynaconf` supports many file types, such as `yaml, json, toml, ini, py`, and `env`. For more detail, please read the documentation.
 
@@ -65,7 +62,7 @@ The `settings` variable now contains all the configurations that are declared in
 
 Note that, we may split the configuration into different files by some criteria.
 
-#### Package Dependencies
+### Package Dependencies
 
 The package dependencies are defined in `pip-requirements`, in file name `requirements.txt` by default.
 
@@ -82,7 +79,7 @@ loguru
 
 The 3 packages `fastapi, python-multipart, uvicorn` are used to run the web server. `Loguru` is used to make the logging task easier.
 
-#### Source code
+### Source code
 
 All the source code is placed in `scr/` folder. Note that, we separate this application into smaller parts which means instead of writing all endpoints in one `FastAPI`.
 
@@ -91,7 +88,7 @@ The `src/components` use to contain all class definitions which are used in the 
 The `src/interfaces` carries the data models, for example, the request data class or the response model in every endpoints.
 To define the `APIRouter` in groups, we place the `APIRouter` definition in different files in the `src/routers`.
 
-#### Tests
+### Tests
 
 We have a folder `test/` here containing all test cases, to check whether all the tests are satisfied or not.
 
@@ -101,7 +98,7 @@ The testing framework in this base project is [`PyTest`](https://docs.pytest.org
 pytest tests/
 ```
 
-#### Containerization
+### Containerization
 
 We run the training job on the Docker environment. To reduce the build time, I created my image. This custom image contains some basic packages:
 
