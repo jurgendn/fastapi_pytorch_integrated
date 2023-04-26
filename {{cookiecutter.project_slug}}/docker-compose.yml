@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  some_service:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    container_name: serviceName
+    ports:
+      - "8888:8888"
+    # If there are some environment variables, you can add them here
+    environment:
+      - SOME_ENV_VAR=some_value
+    # If there are some environment variables in a file, you can add them here
+    env_file:
+      - .env
+    # If there are some volumes, you can add them here
+    volumes:
+      - ./storage/:/home/working/storage/
+    # Some policy to restart container when it fails
+    # restart: always
+    restart: on-failure:3
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
